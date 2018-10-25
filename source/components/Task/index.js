@@ -11,11 +11,12 @@ import Remove from '../../theme/assets/Remove';
 
 export default class Task extends PureComponent {
     state = {
-        isEditing: false,
+        isTaskEditing: false,
         message: this.props.message,
+        newMessage: this.props.message,
     };
 
-    messageElement = React.createRef();
+    taskInput = React.createRef();
 
     _getTaskShape = ({
         id = this.props.id,
@@ -28,73 +29,86 @@ export default class Task extends PureComponent {
         favorite,
         message,
     });
-
-    _setTaskEditingState = (state) => {
-        this.setState(
-            { isEditing: state }
-        );
-    };
-
+    
     _removeTask = () => {
-        const { id, removeTask } = this.props;
-
-        removeTask(id);
+        const { id, _removeTaskAsync } = this.props;
+        
+        _removeTaskAsync(id);
     };
-
-    _updateTask = this.props.updateTask;
-
-    _completeTask = () => {
-        const { completed } = this.props;
+    
+    _updateTask = (task) => {
+        const { _updateTaskAsync } = this.props;
+        
+        this._setTaskEditingState(false);
+        
+        if (this.state.newMessage === this.props.message) return null;
+        
+        _updateTaskAsync(task);
+    };
+    
+    _toggleTaskCompletedState = () => {
+        const { completed, _updateTaskAsync } = this.props;
         const task = this._getTaskShape({ completed: !completed });
-
-        this._updateTask(task);
+        
+        _updateTaskAsync(task);
     };
-
-    _starTask = () => {
-        const { favorite } = this.props;
+    
+    _toggleTaskFavoriteState = () => {
+        const { favorite, _updateTaskAsync } = this.props;
         const task = this._getTaskShape({ favorite: !favorite });
-
-        this._updateTask(task);
+        
+        _updateTaskAsync(task);
     };
-
-    _toggleEditTask = () => {
-        if (this.state.isEditing) {
-            const task = this._getTaskShape({ message: this.state.message });
-
-            this._updateTask(task);
-
-            this._setTaskEditingState(false);
+    
+    _cancelUpdatingTaskMessage = () => {
+        this.setState({newMessage: this.props.message});
+        this._setTaskEditingState(false);
+    }
+    
+    _setTaskEditingState = (state) => {
+        if (state === true) {
+            this.setState(
+                { isTaskEditing: state },
+                () => this.taskInput.current.focus()
+            );
         } else {
             this.setState(
-                { isEditing: true,},
-                () => this.messageElement.current.focus()
+                { isTaskEditing: state }
             );
         }
     };
 
-    _handleTaskChange = (event) => {
+    _updateTaskMessageOnClick = () => {
+        const {isTaskEditing, newMessage} = this.state;
+        const task = this._getTaskShape({message: newMessage});
+
+        if (isTaskEditing) {
+            this._updateTask(task);
+            return null;
+        } else {
+            this._setTaskEditingState(true);
+        }
+    };
+
+    _updateNewTaskMessage = (event) => {
         this.setState({
-            message: event.target.value,
+            newMessage: event.target.value,
         });
     };
 
-    _updateTaskMessageOnKeyDown = () => {
-
-    };
-
-    _handleKeyPress = (event) => {
+    _updateTaskMessageOnKeyDown = (event) => {
         if (event.key === 'Enter') {
-            const task = this._getTaskShape({ message: this.state.message });
+            if (this.state.newMessage === '') return null;
+
+            const task = this._getTaskShape({ message: this.state.newMessage });
 
             this._updateTask(task);
 
             this.setState({
-                isEditing: false,
+                isTaskEditing: false,
             });
         } else if (event.key === 'Escape') {
-            this.setState({
-                isEditing: false,
-            });
+            this._cancelUpdatingTaskMessage();
         }
     }
 
@@ -107,29 +121,30 @@ export default class Task extends PureComponent {
     };
 
     render () {
-        const { message, completed, favorite } = this.props;
+        const { completed, favorite } = this.props;
         const iconsColor = '#3B8EF3';
-        const iconsFillColor = '#fff';
+        const iconsFillColor = '#FFF';
         const taskStyles = this._getTaskStyles();
 
         return (
             <li className = { taskStyles }>
                 <div className = { Styles.content }>
                     <Checkbox 
+                        inlineBlock
                         checked = { completed }
                         className = { Styles.toggleTaskCompletedState } 
                         color1 = { iconsColor } 
                         color2 = { iconsFillColor }
-                        onClick = { this._completeTask }
+                        onClick = { this._toggleTaskCompletedState }
                     />
                     <input 
                         type = "text" 
-                        maxLength = "50" 
-                        disabled = { !this.state.isEditing }
-                        value = { this.state.message }
-                        ref = { this.messageElement }
-                        onChange = { this._handleTaskChange }
-                        onKeyDown = { this._handleKeyPress }
+                        maxLength = {50}
+                        disabled = { !this.state.isTaskEditing }
+                        value = { this.state.newMessage }
+                        ref = { this.taskInput }
+                        onChange = { this._updateNewTaskMessage }
+                        onKeyDown = { this._updateTaskMessageOnKeyDown }
                     />
                 </div>
                 <div className = { Styles.actions }>
@@ -138,18 +153,22 @@ export default class Task extends PureComponent {
                         className = { Styles.toggleTaskFavoriteState }
                         inlineBlock
                         color1 = {iconsColor} 
-                        onClick = { this._starTask }
+                        color2 = {"#000"}
+                        onClick = { this._toggleTaskFavoriteState }
                       />
                     <Edit 
-                        checked = { this.state.isEditing }
+                        checked = { this.state.isTaskEditing }
                         className = { Styles.updateTaskMessageOnClick } 
                         inlineBlock
                         color1 = {iconsColor} 
-                        onClick = { this._toggleEditTask }
+                        color2 = {"#000"}
+                        onClick = { this._updateTaskMessageOnClick }
                     />
                     <Remove 
+                        className = { Styles.removeTask }
                         inlineBlock 
                         color1 = {iconsColor} 
+                        color2 = {"#000"}
                         onClick = {this._removeTask}
                     />
                 </div>

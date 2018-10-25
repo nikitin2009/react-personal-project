@@ -59,13 +59,8 @@ export const api = {
     },
 
     completeAllTasks: async (tasks) => {
-        let updatedTasks = [];
-        const readResponse = async (response) => {
-            const responseJSON = await response.json();
-            return responseJSON.data[0];
-        };
-        
-        const responses = await Promise.all(tasks.map((task) => {
+        await Promise.all(tasks.map((task) => {
+            task.completed = true;
             return fetch(MAIN_URL, {
                 method: 'PUT',
                 headers: {
@@ -74,11 +69,10 @@ export const api = {
                 },
                 body: JSON.stringify([task]),
             });
-        }));
-        
-        // updatedTasks = await Promise.all(responses.map((response) => readResponse(response)));
+        })).catch((error) => {
+            console.log(error);
+        });
 
-        // return updatedTasks;
     },
 
     removeTask: async (taskId) => {
