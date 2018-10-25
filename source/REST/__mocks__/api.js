@@ -1,5 +1,5 @@
 // Test utilities
-import { BaseTaskModel } from '../../instruments';
+import { BaseTaskModel } from "../../instruments";
 
 export const api = {
     fetchTasks: jest.fn(() => {

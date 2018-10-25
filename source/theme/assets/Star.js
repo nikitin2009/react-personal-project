@@ -1,8 +1,8 @@
 // Core
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 // Imstruments
-import { withSvg } from 'instruments/withSvg';
+import { withSvg } from "instruments/withSvg";
 
 class Star extends Component {
     render () {

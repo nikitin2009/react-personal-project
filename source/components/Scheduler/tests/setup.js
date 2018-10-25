@@ -1,12 +1,12 @@
 // Core
-import React from 'react';
-import { mount } from 'enzyme';
+import React from "react";
+import { mount } from "enzyme";
 
 // Test component
-import Scheduler from '../';
+import Scheduler from "../";
 
-const testMessage1 = 'Выполнить важную задачу.';
-const testMessage2 = 'Выполнить важную задачу срочно!';
+const testMessage1 = "Выполнить важную задачу.";
+const testMessage2 = "Выполнить важную задачу срочно!";
 
 // Mocks
 const mocks = {
@@ -14,8 +14,8 @@ const mocks = {
 };
 
 const initialState = {
-    newTaskMessage:  '',
-    tasksFilter:     '',
+    newTaskMessage:  "",
+    tasksFilter:     "",
     isTasksFetching: false,
     tasks:           [],
 };
@@ -24,25 +24,25 @@ const result = mount(<Scheduler />);
 
 // Spies
 const spies = {
-    _updateTasksFilterSpy:    jest.spyOn(result.instance(), '_updateTasksFilter'),
+    _updateTasksFilterSpy:    jest.spyOn(result.instance(), "_updateTasksFilter"),
     _updateNewTaskMessageSpy: jest.spyOn(
         result.instance(),
-        '_updateNewTaskMessage',
+        "_updateNewTaskMessage"
     ),
-    _getAllCompletedSpy:       jest.spyOn(result.instance(), '_getAllCompleted'),
+    _getAllCompletedSpy:       jest.spyOn(result.instance(), "_getAllCompleted"),
     _setTasksFetchingStateSpy: jest.spyOn(
         result.instance(),
-        '_setTasksFetchingState',
+        "_setTasksFetchingState"
     ),
-    _fetchTasksAsyncSpy:       jest.spyOn(result.instance(), '_fetchTasksAsync'),
-    _createTaskAsyncSpy:       jest.spyOn(result.instance(), '_createTaskAsync'),
-    _updateTaskAsyncSpy:       jest.spyOn(result.instance(), '_updateTaskAsync'),
-    _removeTaskAsyncSpy:       jest.spyOn(result.instance(), '_removeTaskAsync'),
+    _fetchTasksAsyncSpy:       jest.spyOn(result.instance(), "_fetchTasksAsync"),
+    _createTaskAsyncSpy:       jest.spyOn(result.instance(), "_createTaskAsync"),
+    _updateTaskAsyncSpy:       jest.spyOn(result.instance(), "_updateTaskAsync"),
+    _removeTaskAsyncSpy:       jest.spyOn(result.instance(), "_removeTaskAsync"),
     _completeAllTasksAsyncSpy: jest.spyOn(
         result.instance(),
-        '_completeAllTasksAsync',
+        "_completeAllTasksAsync"
     ),
-    componentDidMount: jest.spyOn(Scheduler.prototype, 'componentDidMount'),
+    componentDidMount: jest.spyOn(Scheduler.prototype, "componentDidMount"),
 };
 
 export { testMessage1, testMessage2, mocks, initialState, spies, result };

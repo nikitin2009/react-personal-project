@@ -1,13 +1,13 @@
 // Core
-import React, { Component } from 'react';
-import { number } from 'prop-types';
+import React, { Component } from "react";
+import { number } from "prop-types";
 
 // Instruments
-import { getDisplayName } from './';
+import { getDisplayName } from "./";
 
 const decorateSvg = (
     { viewBoxWidth = 0, viewBoxHeight = 0, width = 0, height = 0 } = {},
-    Enhanceable,
+    Enhanceable
 ) => {
     class withSvg extends Component {
         static propTypes = {
@@ -16,7 +16,7 @@ const decorateSvg = (
         };
 
         static defaultProps = {
-            color1: '#f00',
+            color1: "#f00",
             width,
             height,
         };
@@ -38,7 +38,7 @@ const decorateSvg = (
         _getSvgStyle = () => ({
             width:   this.props.width,
             height:  this.props.height,
-            display: 'block',
+            display: "block",
         });
 
         _getWrapperStyle = () => {
@@ -47,7 +47,7 @@ const decorateSvg = (
             return {
                 width:   this.props.width,
                 height:  this.props.height,
-                display: inlineBlock ? 'inline-block' : 'block',
+                display: inlineBlock ? "inline-block" : "block",
             };
         };
 

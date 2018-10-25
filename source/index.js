@@ -1,11 +1,11 @@
 // Core
-import React from 'react';
-import { render } from 'react-dom';
+import React from "react";
+import { render } from "react-dom";
 
 // Instruments
-import './theme/init';
+import "./theme/init";
 
 // App
-import App from './pages/App';
+import App from "./pages/App";
 
-render(<App />, document.getElementById('app'));
+render(<App />, document.getElementById("app"));

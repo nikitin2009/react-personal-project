@@ -1,21 +1,21 @@
 // Core
-import React from 'react';
-import { shallow } from 'enzyme';
+import React from "react";
+import { shallow } from "enzyme";
 
 // Test component
-import Spinner from '../';
+import Spinner from "../";
 
 export const result = shallow(<Spinner />);
 
-describe('Компонент Sinner:', () => {
-    test('должен отрендерить разметку, если значение пропса isSpinning — true', () => {
+describe("Компонент Sinner:", () => {
+    test("должен отрендерить разметку, если значение пропса isSpinning — true", () => {
         result.setProps({
             isSpinning: true,
         });
         expect(result).toMatchSnapshot();
     });
 
-    test('должен отрендерить null, если значение пропса isSpinning — false', () => {
+    test("должен отрендерить null, если значение пропса isSpinning — false", () => {
         result.setProps({
             isSpinning: false,
         });
