@@ -8,7 +8,7 @@ import Task from "../Task";
 
 // Instruments
 import Styles from "./styles.m.css";
-import { api } from "../../REST"; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
+import { api } from "../../REST";
 import Checkbox from "../../theme/assets/Checkbox";
 
 export default class Scheduler extends Component {
@@ -205,10 +205,10 @@ export default class Scheduler extends Component {
                 <Spinner isSpinning = { isTasksFetching } />
                 <main>
                     <header>
-                        <h1>Планировщик задач</h1>
+                        <h1>Awesome TO-DO App</h1>
                         <input
                             onChange = { this._updateTasksFilter }
-                            placeholder = 'Поиск'
+                            placeholder = 'Search'
                             type = 'search'
                             value = { this.state.tasksFilter }
                         />
@@ -219,11 +219,11 @@ export default class Scheduler extends Component {
                                 className = { Styles.createTask }
                                 maxLength = { 50 }
                                 onChange = { this._updateNewTaskMessage }
-                                placeholder = 'Описaние моей новой задачи'
+                                placeholder = 'Description'
                                 type = 'text'
                                 value = { newTaskMessage }
                             />
-                            <button>Добавить задачу</button>
+                            <button>Add new</button>
                         </form>
                         <div className = 'overlay'>
                             <ul>
@@ -233,13 +233,13 @@ export default class Scheduler extends Component {
                     </section>
                     <footer>
                         <Checkbox
+                            checked = { this._getAllCompleted() }
                             color1 = { "#363636" }
                             color2 = { "#fff" }
                             onClick = { this._completeAllTasksAsync }
-                            checked = { this._getAllCompleted() }
                         />
                         <span className = { Styles.completeAllTasks }>
-                            Все задачи выполнены
+                            Complete all
                         </span>
                     </footer>
                 </main>
