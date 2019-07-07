@@ -44,7 +44,6 @@ export default class Scheduler extends Component {
             });
             this._setTasksFetchingState(false);
         } catch (error) {
-            console.log(error.message);
             this._setTasksFetchingState(false);
         }
     };
@@ -54,7 +53,7 @@ export default class Scheduler extends Component {
 
         const { newTaskMessage } = this.state;
 
-        if (newTaskMessage === "") {
+        if (!newTaskMessage) {
             return null;
         }
 
@@ -118,7 +117,7 @@ export default class Scheduler extends Component {
     };
 
     _getAllCompleted = () => {
-        const isAllCompleted = this.state.tasks.every((task) => task.completed);
+        const isAllCompleted = this.state.tasks.every(({ completed }) => completed);
 
         return isAllCompleted;
     };
@@ -165,10 +164,11 @@ export default class Scheduler extends Component {
             isTasksFetching,
             tasksFilter,
         } = this.state;
+        const areAllCompleted = this._getAllCompleted();
         let filteredTasks = tasks;
 
         // Apply search result
-        if (tasksFilter !== "") {
+        if (tasksFilter) {
             filteredTasks = tasks.filter((task) =>
                 task.message.toLowerCase().includes(tasksFilter)
             );
@@ -207,10 +207,10 @@ export default class Scheduler extends Component {
                     <header>
                         <h1>Awesome TO-DO App</h1>
                         <input
-                            onChange = { this._updateTasksFilter }
                             placeholder = 'Search'
                             type = 'search'
                             value = { this.state.tasksFilter }
+                            onChange = { this._updateTasksFilter }
                         />
                     </header>
                     <section>
@@ -218,10 +218,10 @@ export default class Scheduler extends Component {
                             <input
                                 className = { Styles.createTask }
                                 maxLength = { 50 }
-                                onChange = { this._updateNewTaskMessage }
                                 placeholder = 'Description'
                                 type = 'text'
                                 value = { newTaskMessage }
+                                onChange = { this._updateNewTaskMessage }
                             />
                             <button>Add new</button>
                         </form>
@@ -233,7 +233,7 @@ export default class Scheduler extends Component {
                     </section>
                     <footer>
                         <Checkbox
-                            checked = { this._getAllCompleted() }
+                            checked = { areAllCompleted }
                             color1 = { "#363636" }
                             color2 = { "#fff" }
                             onClick = { this._completeAllTasksAsync }
